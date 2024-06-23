@@ -13,39 +13,72 @@ struct ContentView: View {
     
     var body: some View{
         
-        ZStack{
-            Image("image")
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-            
-            VStack(alignment: .center, spacing: 1.0){
-                    Spacer()
-                    .frame(height: 450)
-                TextField("Kullanici Adi", text: $username)
-                    .foregroundColor(.red)
-                    .multilineTextAlignment(.center)
-                    .padding()
-                    .opacity(0.7)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
+        NavigationView{
+            ZStack{
+                Image("image")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
                 
-                SecureField("Şifre", text: $password)
-                    .multilineTextAlignment(.center)
-                    .padding()
-                    .opacity(0.7)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                VStack(alignment: .center, spacing: 1.0){
                     
-                Button("Giriş") {
-                    /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Action@*/ /*@END_MENU_TOKEN@*/
+                    Spacer()
+                        .frame(height: 450)
+                    TextField("Kullanici Adi", text: $username)
+                        .foregroundColor(.white)
+                        .multilineTextAlignment(.center)
+                        .padding()
+                        .opacity(0.7)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                    
+                    SecureField("Şifre", text: $password)
+                        .multilineTextAlignment(.center)
+                        .padding()
+                        .opacity(0.7)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                    
+                    HStack(){
+                        
+                        Button(action: {
+                        }) {
+                            NavigationLink(destination: mainpage()){
+                                Text("Kayıt Ol")
+                                    .multilineTextAlignment(.center)
+                                    .font(.system(size: 12, weight: .bold))
+                                    .foregroundColor(.black)
+                                    .padding(10)
+                                    .frame(width: 100)
+                                    .background(Color.gray.opacity(0.8))
+                                    .cornerRadius(30)
+                            }
+                        }
+                        
+                        //Spacer()
+                        
+                        
+                        Button(action: {
+                        }) {
+                            
+                                Text("Giriş")
+                                    .multilineTextAlignment(.center)
+                                    .font(.system(size: 12, weight: .bold))
+                                    .foregroundColor(.black)
+                                    .padding(10)
+                                    .frame(width: 100)
+                                    .background(Color.gray.opacity(0.8))
+                                    .cornerRadius(30)
+                        }
+                        
+                        
+                        
+                    }
+                    
+                    
                 }
-                .padding(.top, 23.0)
                 
-               
+                
             }
-            
-            
         }
-        
         
     }
 }
