@@ -6,12 +6,17 @@
 //
 
 import SwiftUI
+import FirebaseDatabase
 
 struct mainpage: View {
+    
+    @State private var NewConfirmpassword: String = ""
     @State private var Newusername: String = ""
     @State private var Newpassword: String = ""
     @State private var Newname: String = ""
     @State private var Newsurname: String = ""
+    @State private var errorMessage: String = ""
+    
     
     var body: some View {
         
@@ -55,16 +60,22 @@ struct mainpage: View {
                             .opacity(0.7)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                         
-                        SecureField("Sifre Tekrar", text: $Newpassword)
+                        SecureField("Sifre Tekrar", text: $NewConfirmpassword)
                             .foregroundColor(.white)
                             .multilineTextAlignment(.center)
                             .padding()
                             .opacity(0.7)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                         
+                        if !errorMessage.isEmpty {
+                                        Text(errorMessage)
+                                            .foregroundColor(.red)
+                                            .padding()
+                                    }
                         HStack(){
                             
                             Button(action: {
+                                registerUser()
                             }) {
                                 
                                     Text("Kayıt Ol")
@@ -83,7 +94,42 @@ struct mainpage: View {
             }
         }
     }
+    
+    func registerUser() {
+            // Kayıt işlemini başlat
+            if Newpassword != NewConfirmpassword {
+                errorMessage = "Şifreler uyuşmuyor"
+            } else {
+                // Firebase'e kullanıcı adı ve şifreyi kaydet
+                let ref = Database.database().reference()
+                let userRef = ref.child("users").childByAutoId()
+                let userObject = [
+                    "username": Newusername,
+                    "password": Newpassword,
+                    "name": Newname,
+                    "surname":Newsurname,
+                    
+                ]
+
+                userRef.setValue(userObject) { (error, ref) in
+                    if let error = error {
+                        errorMessage = "Kayıt başarısız: \(error.localizedDescription)"
+                    } else {
+                        errorMessage = "Kayıt başarılı"
+                    }
+                }
+            }
+        }
+
+    
+    
+    
+    
+    
 }
+
+
+
 
 #Preview {
     mainpage()
