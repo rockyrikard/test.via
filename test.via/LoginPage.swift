@@ -24,7 +24,7 @@ struct ContentView: View {
                     
                     Spacer()
                         .frame(height: 450)
-                    TextField("Kullanici Adi 12", text: $username)
+                    TextField("Kullanici Adi", text: $username)
                         .foregroundColor(.white)
                         .multilineTextAlignment(.center)
                         .padding()
