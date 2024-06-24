@@ -41,7 +41,7 @@ struct mainpage: View {
                             .opacity(0.7)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                         
-                        TextField("Kullanici Adi", text: $Newusername)
+                        TextField("asdsadas Adi", text: $Newusername)
                             .foregroundColor(.white)
                             .multilineTextAlignment(.center)
                             .padding()
