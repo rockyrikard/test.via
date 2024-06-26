@@ -6,10 +6,14 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct ContentView: View {
     @State private var username: String = ""
     @State private var password: String = ""
+    @State private var showingAlert = false
+     @State private var alertMessage = ""
+    @State private var errorMessage: String = ""
     
     var body: some View{
         
@@ -24,8 +28,8 @@ struct ContentView: View {
                     
                     Spacer()
                         .frame(height: 450)
-                    TextField("Kullanici Adi", text: $username)
-                        .foregroundColor(.white)
+                    TextField("E-Posta", text: $username)
+                        //.foregroundColor(.white)
                         .multilineTextAlignment(.center)
                         .padding()
                         .opacity(0.7)
@@ -57,6 +61,8 @@ struct ContentView: View {
                         
                         
                         Button(action: {
+                            
+                            loginUser()
                         }) {
                             
                                 Text("Giriş")
@@ -68,6 +74,10 @@ struct ContentView: View {
                                     .background(Color.gray.opacity(0.8))
                                     .cornerRadius(30)
                         }
+                        .padding()
+                        .alert(isPresented: $showingAlert) {
+                                    Alert(title: Text("Message"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+                                }
                         
                         
                         
@@ -80,7 +90,24 @@ struct ContentView: View {
             }
         }
         
+       
     }
+    func loginUser() {
+            Auth.auth().signIn(withEmail: username, password: password) { authResult, error in
+                if let error = error {
+                    errorMessage = "Giriş Hatası: \(error.localizedDescription)"
+                    alertMessage = "Bir Yerde Hata Oluştu!"
+                    showingAlert = true
+                    
+                    return
+                }
+                
+                alertMessage = "Giriş Başarılı!"
+                showingAlert = true
+        
+            }
+        }
+  
 }
 
 struct ContentView_Previews: PreviewProvider{
