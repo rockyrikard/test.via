@@ -64,7 +64,7 @@ struct ContentView: View {
                             
                             loginUser()
                         }) {
-                            
+                            NavigationLink(destination: MainContentView()){
                                 Text("Giriş")
                                     .multilineTextAlignment(.center)
                                     .font(.system(size: 12, weight: .bold))
@@ -73,6 +73,8 @@ struct ContentView: View {
                                     .frame(width: 100)
                                     .background(Color.gray.opacity(0.8))
                                     .cornerRadius(30)
+                            }
+                            
                         }
                         .padding()
                         .alert(isPresented: $showingAlert) {
