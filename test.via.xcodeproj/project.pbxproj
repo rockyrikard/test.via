@@ -19,6 +19,7 @@
 		A3B5C1B62C2A0F5900F7CAFB /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = A3B5C1B52C2A0F5900F7CAFB /* FirebaseAnalytics */; };
 		A3B5C1B82C2A0F5900F7CAFB /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = A3B5C1B72C2A0F5900F7CAFB /* FirebaseAnalyticsSwift */; };
 		A3B5C1BA2C2A15E000F7CAFB /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = A3B5C1B92C2A15E000F7CAFB /* FirebaseDatabase */; };
+		A3B5C1C22C2C779800F7CAFB /* Page_1.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B5C1C12C2C779800F7CAFB /* Page_1.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,7 @@
 		1E6BA6B72C28520E00AE83DB /* test_viaUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test_viaUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		1E6BA6C42C28B04900AE83DB /* mainpage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mainpage.swift; sourceTree = "<group>"; };
 		A3B5C1B22C2A0E4200F7CAFB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../GoogleService-Info.plist"; sourceTree = "<group>"; };
+		A3B5C1C12C2C779800F7CAFB /* Page_1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Page_1.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +106,7 @@
 		1E6BA6992C28520B00AE83DB /* test.via */ = {
 			isa = PBXGroup;
 			children = (
+				A3B5C1C12C2C779800F7CAFB /* Page_1.swift */,
 				A3B5C1B22C2A0E4200F7CAFB /* GoogleService-Info.plist */,
 				1E6BA6C42C28B04900AE83DB /* mainpage.swift */,
 				1E6BA69A2C28520B00AE83DB /* test_viaApp.swift */,
@@ -278,6 +281,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A3B5C1C22C2C779800F7CAFB /* Page_1.swift in Sources */,
 				1E6BA6C52C28B04A00AE83DB /* mainpage.swift in Sources */,
 				1E6BA69D2C28520B00AE83DB /* LoginPage.swift in Sources */,
 				1E6BA69B2C28520B00AE83DB /* test_viaApp.swift in Sources */,
@@ -446,6 +450,8 @@
 				DEVELOPMENT_ASSET_PATHS = "\"test.via/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSAppleMusicUsageDescription = "$(PRODUCT_NAME) need to access media for uploading photos";
+				INFOPLIST_KEY_NSCameraUsageDescription = "$(PRODUCT_NAME) need to acces camera for taking photos";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -474,6 +480,8 @@
 				DEVELOPMENT_ASSET_PATHS = "\"test.via/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSAppleMusicUsageDescription = "$(PRODUCT_NAME) need to access media for uploading photos";
+				INFOPLIST_KEY_NSCameraUsageDescription = "$(PRODUCT_NAME) need to acces camera for taking photos";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

@@ -16,6 +16,7 @@ struct mainpage: View {
     @State private var Newname: String = ""
     @State private var Newsurname: String = ""
     @State private var errorMessage: String = ""
+   
     
     
     var body: some View {
