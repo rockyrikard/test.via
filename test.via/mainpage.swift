@@ -109,6 +109,7 @@ struct mainpage: View {
                 }
             }
         }
+        .navigationBarBackButtonHidden(true)
     }
     func registerUser() {
             if password != Confirmpassword {

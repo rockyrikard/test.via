@@ -7,6 +7,7 @@
 
 import SwiftUI
 import PhotosUI
+import FirebaseStorage
 
 struct Photo: Identifiable {
     let id = UUID()
@@ -77,9 +78,9 @@ struct FriendsView: View {
 struct CameraView: View {
     
     @State private var selectedItem: PhotosPickerItem?
-    @State private var image: UIImage?
     @State private var showCamera = false
     @State private var selectedImage: UIImage?
+    @State private var uploadStatus = ""
     
     var body: some View {
         ZStack {
@@ -87,10 +88,10 @@ struct CameraView: View {
             LinearGradient(gradient: Gradient(colors: [.blue, .purple]),
                            startPoint: .topLeading,
                            endPoint: .bottomTrailing)
-                .edgesIgnoringSafeArea(.all)
+            .edgesIgnoringSafeArea(.all)
             
             VStack(spacing: 20) {
-                Text("Fotoğraf Seç ve Çek")
+                Text("Fotoğraf Paylaş")
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .foregroundColor(.white)
@@ -108,7 +109,7 @@ struct CameraView: View {
                 Button(action: {
                     self.showCamera.toggle()
                 }) {
-                    Text("Kamerayı Aç")
+                    Text("Kamerayı ile Çek")
                         .font(.headline)
                         .foregroundColor(.white)
                         .padding()
@@ -126,7 +127,7 @@ struct CameraView: View {
                         Task {
                             do {
                                 if let data = try await newItem?.loadTransferable(type: Data.self) {
-                                    image = UIImage(data: data)
+                                    selectedImage = UIImage(data: data)
                                 }
                             } catch {
                                 print("Failed to load the image: \(error)")
@@ -141,16 +142,45 @@ struct CameraView: View {
                     .cornerRadius(10)
                     .shadow(radius: 10)
                 
-                
-                if let image {
-                    Image(uiImage: image)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxWidth: 300, maxHeight: 300)
-                        .clipShape(RoundedRectangle(cornerRadius: 20))
-                        .shadow(radius: 10)
+                Button(action: {
+                    //storage a yükleme fonksiyonu çağırılacak
+                    
+                    if let selectedImage = selectedImage {
+                                        uploadImage(selectedImage) { result in
+                                            switch result {
+                                            case .success(let url):
+                                                uploadStatus = "Upload successful: \(url.absoluteString)"
+                                            case .failure(let error):
+                                                uploadStatus = "Upload failed: \(error.localizedDescription)"
+                                            }
+                                        }
+                                    }
+                    
+                }) {
+                    Text("Paylaş!")
+                        .font(.headline)
+                        .foregroundColor(.white)
                         .padding()
+                        .frame(width: 200, height: 50)
+                        .background(Color.cyan)
+                        .cornerRadius(10)
+                        .shadow(radius: 10)
                 }
+                .padding()
+                
+                Text(uploadStatus)
+                .padding()
+                
+                /*
+                 if let image {
+                 Image(uiImage: image)
+                 .resizable()
+                 .scaledToFit()
+                 .frame(maxWidth: 300, maxHeight: 300)
+                 .clipShape(RoundedRectangle(cornerRadius: 20))
+                 .shadow(radius: 10)
+                 .padding()
+                 }*/
             }
             .padding()
         }
@@ -171,7 +201,7 @@ struct CameraView: View {
         
         func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {
         }
-
+        
         func makeCoordinator() -> Coordinator {
             Coordinator(self)
         }
@@ -191,40 +221,72 @@ struct CameraView: View {
             }
         }
     }
-
     
-    
-}
+    func uploadImage(_ selectedImage: UIImage, completion: @escaping (Result<URL, Error>) -> Void) {
+        guard let imageData = selectedImage.jpegData(compressionQuality: 0.8) else {
+            completion(.failure(NSError(domain: "Invalid Image Data", code: -1, userInfo: nil)))
+            return
+        }
 
+        let storage = Storage.storage()
+        let storageRef = storage.reference()
+        let imagesRef = storageRef.child("images/\(UUID().uuidString).jpg")
+        
+        // Metadata oluştur
+        let metadata = StorageMetadata()
+        metadata.contentType = "image/jpeg"
 
+        // Veriyi ve metadata'yı yükle
+        imagesRef.putData(imageData, metadata: metadata) { (metadata, error) in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
 
-struct MainContentView: View {
-    var body: some View {
-        TabView {
-            MainPageView(photos: Fotolar)
-                .tabItem {
-                    Image(systemName: "house.fill")
-                    Text("Ana Sayfa")
+            imagesRef.downloadURL { (url, error) in
+                if let error = error {
+                    completion(.failure(error))
+                    return
                 }
-            
-            FriendsView()
-                .tabItem {
-                    Image(systemName: "person.fill")
-                    Text("Arkadaslar")
+
+                if let downloadURL = url {
+                    completion(.success(downloadURL))
                 }
-            
-            CameraView()
-                .tabItem {
-                    Image(systemName: "camera")
-                    Text("Fotoğraf")
-                }
+            }
         }
     }
     
 }
-
-struct MainContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        MainContentView()
+    
+    struct MainContentView: View {
+        var body: some View {
+            TabView {
+                MainPageView(photos: Fotolar)
+                    .tabItem {
+                        Image(systemName: "house.fill")
+                        Text("Ana Sayfa")
+                    }
+                
+                FriendsView()
+                    .tabItem {
+                        Image(systemName: "person.fill")
+                        Text("Arkadaslar")
+                    }
+                
+                CameraView()
+                    .tabItem {
+                        Image(systemName: "camera")
+                        Text("Fotoğraf")
+                    }
+            }
+        }
+        
     }
-}
+
+
+    struct MainContentView_Previews: PreviewProvider {
+        static var previews: some View {
+            MainContentView()
+        }
+    }
+
