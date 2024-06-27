@@ -141,6 +141,7 @@ struct CameraView: View {
                     .cornerRadius(10)
                     .shadow(radius: 10)
                 
+                
                 if let image {
                     Image(uiImage: image)
                         .resizable()
